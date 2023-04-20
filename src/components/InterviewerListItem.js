@@ -28,7 +28,3 @@ export default function InterviewerListItem(props) {
     </li>
   );
 }
-
-
-// onClick={() => setInterviewer(props.id)}
-//onClick={setInterviewer}
