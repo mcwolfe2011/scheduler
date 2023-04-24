@@ -28,7 +28,6 @@ export default function Application(props) {
 
   //Working on this today April 24
   function bookInterview(id, interview) {
-    const [state, setState] = useState();
     console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
