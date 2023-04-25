@@ -19,7 +19,9 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
+    bookInterview: { bookInterview },
+    cancelInterview: { cancelInterview }
   });
 
   const appointments = getAppointmentsForDay(state, state.day);
@@ -28,7 +30,8 @@ export default function Application(props) {
 
   //Working on this today April 24
   function bookInterview(id, interview) {
-    console.log(id, interview);
+    setState({ ...state, appointments });
+    //console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -37,6 +40,26 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
+    return Axios.put(`/api/appointmnets/${id}`, {
+      interview
+    }).then(() => {
+      setState({ ...state, appointments: appointments });
+    });
+  }
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return Axios.delete(`api/appointments/${id}`).then(() => {
+      setState({ ...state, appointments: appointments });
+    });
   }
 
   useEffect(() => {
@@ -45,10 +68,6 @@ export default function Application(props) {
       Axios.get("api/appointments"),
       Axios.get("api/interviewers")
     ]).then(all => {
-      console.log("Days", all[0]);
-      console.log("Appointments", all[1]);
-      console.log("Interviewers", all[2]);
-      //setDays(days.data);
       setState(prev => ({
         ...prev,
         days: all[0].data,
@@ -71,6 +90,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
