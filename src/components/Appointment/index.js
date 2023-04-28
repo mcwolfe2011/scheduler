@@ -69,7 +69,6 @@ export default function Appointment(props) {
   }
 
   // WHEN YOU WANT TO DELETE INTERVIEW
-
   function onConfirm() {
     transition(DELETING, true); // LOADING SCREEN FOR DELETE
 
